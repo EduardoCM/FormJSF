@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+     <center>
+         <h:form style="align-content: center">
+            <h2>JSF Registration App</h2>
+            <h4>Registrtion Form</h4>
+            
+            <h:panelGrid columns="3" >
+                <h:outputText value="Nombre: " />
+                <h:inputText id="txtNombre" value="#{clienteMB.cliente.nombre}" required="true" label="Nombre requerido">
+                    <f:validator validatorId="buroCreditoValidator" />
+                </h:inputText>
+                
+                <h:message for="txtNombre" style="color: red"/>
+                
+                <h:outputText value="Apellidos: " />
+                <h:inputText id="txtApellidos" value="#{clienteMB.cliente.apellidos}" required="true" label="Apellidos requeridos"/>
+                
+                <h:message for="txtApellidos" style="color: red" />
+                
+                
+                <h:outputText value="Edad: " />
+                <h:inputText id="txtEdad" value="#{clienteMB.cliente.edad}" label="(1-18)">
+                    <f:validateLongRange for="txtEdad" minimum="1" maximum="18"></f:validateLongRange>
+                </h:inputText>
+                
+                <h:message for="txtEdad" style="color: red" />
+                
+                
+                <h:outputLabel value="Sexo: "/>
+                <h:selectOneRadio id="txtSexo" value="#{clienteMB.cliente.sexo}" required="true" label="Sexo requerido">
+                    <f:selectItem itemLabel="Masculino" itemValue="masculino" />
+                    <f:selectItem itemLabel="Femenino" itemValue="femenino" />
+                </h:selectOneRadio>
+                
+                <h:message for="txtSexo" style="color: red" />
+                
+                <h:outputText value="Fecha de cumpleaños:" />
+                <h:inputText id="txtFechaCumple" value="#{clienteMB.cliente.fechaCumpleanos}" required="true" label="fecha requerida" requiredMessage="Fecha Requerida" />
+                
+                <h:message for="txtFechaCumple" style="color: red" />
+                
+                <h:outputText value="Correo electronico: " />
+                <h:inputText id="txtCorreo" value="#{clienteMB.cliente.correoElectronico}" required="true" label="correo requerido" validatorMessage="Email Incorrecto">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </h:inputText>
+                
+                <h:message for="txtCorreo" style="color: red" />
+                
+                <h:outputText value="Pais" />
+                <h:selectOneMenu value="#{clienteMB.cliente.pais}" required="true" label="Pais requerido">
+                    <f:selectItem itemLabel="MEXICO" itemValue="1" />
+                    <f:selectItem itemLabel="EUA" itemValue="2" />
+                    <f:selectItem itemLabel="PERU" itemValue="3"/>
+                    <f:ajax event="change" listener="#{clienteMB.cargarEstados}" render="cboEstado" execute="@this" />
+                </h:selectOneMenu>
+            </h:panelGrid>
+            
+            <!--<h:commandButton value="Guardar" action="result" /> -->
+            <h:commandButton value="Guardar" actionListener="#{clienteMB.guardar}" />
+            
+            <h:commandButton value="Buscar" />
+            
+            
+            <h:dataTable value="#{clienteMB.lstCliente}" var="cliente" rendered="#{clienteMB.lstCliente.size() > 0}">
+               
+                <h:column>
+                <f:facet name="header">
+                    <h:outputLabel value="Nombre" />
+                </f:facet>
+                   <h:outputLabel value="#{cliente.nombre}" />
+               </h:column>
+                
+                
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Apellidos" />
+                    </f:facet>
+                    <h:outputLabel value="#{cliente.apellidos}" />
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="Correo Electronico" />
+                    </f:facet>
+                    <h:outputLabel value="#{cliente.correoElectronico}" />
+                </h:column>
+                
+                <h:column>
+                    <h:commandLink value="Eliminar" actionListener="#{clienteMB.eliminarCliente(cliente)}" immediate="true" />
+                </h:column>
+                
+            </h:dataTable>
+            
+        </h:form>
+      </center>
+    </h:body>
+</html>
+
